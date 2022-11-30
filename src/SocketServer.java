@@ -7,12 +7,7 @@ import java.util.*;
 
 
 public class SocketServer {
-
-////static ServerSocket variable
-//private static SocketServer server;
-////socket server port on which it will listen
-//private static int port = 9876;
-
+    
     public static void main(String[] args) throws IOException{
     int port =9999;
     ServerSocket server=new ServerSocket(port);
