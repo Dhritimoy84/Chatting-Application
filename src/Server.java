@@ -8,15 +8,10 @@ import java.util.*;
 
 public class Server {
 
-//    public static String[] names= {"Dhritimoy", "Ram","Rohan","Rohit"};
-//    public static String getRandomName(){
-//        String randomElement = names.get(randomizer.nextInt(names.size()));
-//    }
-
     public static void main(String[] args) throws IOException {
         int port = 9999;
         ServerSocket server = new ServerSocket(port);
-//        System.out.println("Server waiting for connection....");
+        System.out.println("Server waiting for connection....");
         Socket s = server.accept();
         System.out.println("Connection established");
 
