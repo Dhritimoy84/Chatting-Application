@@ -3,39 +3,36 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class Server {
+    private static String[] firstName = {"Dhritimoy", "Ram", "Sanjay", "Rohit"};
+    private static String[] lastName = {"Majundar", "Das", "Dutta", "Sarma"};
+
+    private static ArrayList<ClientHandler> clientsDS = new ArrayList<>();
+    private static ExecutorService pool = Executors.newFixedThreadPool(6);
 
     public static void main(String[] args) throws IOException {
         int port = 9999;
-        ServerSocket server = new ServerSocket(port);
-        System.out.println("Server waiting for connection....");
-        Socket s = server.accept();
-        System.out.println("Connection established");
+        ServerSocket listener = new ServerSocket(port);
 
-        PrintWriter output = new PrintWriter(s.getOutputStream(), true);
-//to read the request from client
-        BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        try {
-            while (true) {
-                String request = in.readLine();
-                if (request.contains("number")) {
-                    output.println(Math.random());
-                } else {
-                    output.println("Type'tell me a number' to get a random number");
-                }
-            }
-        } finally {
-            {
-                output.close();
-                in.close();
-                s.close();
-                server.close();
+        while (true) {
+            System.out.println("[SERVER] waiting for connection....");
+            Socket client = listener.accept();
+            System.out.println("[SERVER] Connected to Client");
+            ClientHandler clientThread = new ClientHandler(client);
+            clientsDS.add(clientThread);
 
-            }
+            pool.execute(clientThread);
 
         }
     }
-}
+
+        public static String getRandomName () {
+            String name = firstName[(int) (Math.random() * firstName.length)];
+            String sureName = lastName[(int) (Math.random() * lastName.length)];
+            return name + " " + sureName;
+        }
+    }
